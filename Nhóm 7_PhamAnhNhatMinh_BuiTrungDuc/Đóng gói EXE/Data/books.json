@@ -63,17 +63,24 @@
         "duongdan": "Books/the-jungle-book.pdf"
     },
     {
-        "id": 11,
-        "ten": "Nuclear waste",
-        "tacgia": "United States. General Accounting Office",
-        "namxb": 1900,
-        "duongdan": "https://openlibrary.org/works/OL565228W"
-    },
-    {
         "id": 12,
         "ten": "Nuclear power reactor safety",
         "tacgia": "E. E. Lewis",
         "namxb": "1977",
         "duongdan": "https://openlibrary.org/works/OL2908639W"
+    },
+    {
+        "id": 13,
+        "ten": "Harry Potter and the Deathly Hallows",
+        "tacgia": "J. K. Rowling",
+        "namxb": 2007,
+        "duongdan": "https://openlibrary.org/works/OL82586W"
+    },
+    {
+        "id": 14,
+        "ten": "Journey to the center of the earth",
+        "tacgia": "Jules Verne",
+        "namxb": 2000,
+        "duongdan": "https://openlibrary.org/works/OL18437639W"
     }
 ]

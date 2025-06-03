@@ -8,6 +8,8 @@ from tkinter import messagebox, filedialog
 from PIL import Image, ImageTk
 from PyPDF2 import PdfReader
 from pdf2image import convert_from_path
+from bs4 import BeautifulSoup
+from io import BytesIO
 
 import DANHSACH_DanhSachCacSach
 import DOITUONG_Sach
@@ -144,6 +146,26 @@ def layAnhBiaTuFile(duongDan):
     except Exception as e:
         print(f"Đã xảy ra lỗi: {e}")
         return None
+
+def layAnhBiaTuAPI(duongDan):
+    def thayTheKyTu(chuoi, kyTuMoi, viTri):
+        return chuoi[:viTri] + kyTuMoi + chuoi[viTri+1:]
+    try:
+        reponse = requests.get(duongDan)
+        soup = BeautifulSoup(reponse.text, 'html.parser')
+        theChuaAnh = soup.find("div", class_="SRPCover bookCover")
+        linkAnhBia = theChuaAnh.find('a')['href']
+        linkAnhBia = "https:" + linkAnhBia
+        linkAnhBia = thayTheKyTu(linkAnhBia, "M", -5)
+
+        taiAnh = requests.get(linkAnhBia)
+        anhBia = Image.open(BytesIO(taiAnh.content))
+        anhBia = anhBia.resize((300, 400), Image.NEAREST)
+    except:
+        return None
+    return anhBia
+
+
 def kiemTraSachCoLayTuAPI(path):
     if "openlibrary.org" in path:
         return True

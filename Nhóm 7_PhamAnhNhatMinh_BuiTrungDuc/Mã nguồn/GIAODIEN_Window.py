@@ -1,6 +1,7 @@
 import os
 import tkinter as tk
 from tkinter import ttk, messagebox
+from PIL import ImageTk
 
 import DANHSACH_DanhSachCacSach
 import CHUCNANG_Method 
@@ -89,14 +90,21 @@ def xemThongTinSachWindow(frame, tree):
             taoDongChu(thong_tin_frame, "Đường dẫn:",  duongDanFile)
 
             # Frame ảnh bìa 
+            anhBiaFrame = ttk.Frame(xemThongTinFrame, style="frameXemThongTin.TFrame")
+            anhBiaFrame.grid(row=1, column=0, sticky="e", padx=(10,0), pady=(0,15))
+
             if CHUCNANG_Method.kiemTraSachCoLayTuAPI(sach.duongDan) == False:
-                photo_frame = ttk.Frame(xemThongTinFrame, style="frameXemThongTin.TFrame")
-                photo_frame.grid(row=1, column=0, sticky="e", padx=(10,0), pady=(0,15))
-                photo = CHUCNANG_Method.layAnhBiaTuFile(sach.duongDan)
+                anhBia = CHUCNANG_Method.layAnhBiaTuFile(sach.duongDan)
                 
-                label = ttk.Label(photo_frame, image=photo, style="frameXemThongTin.TLabel")
-                label.image = photo
-                label.grid(row=0, column=0, sticky="w")
+                anhBiaLabel = ttk.Label(anhBiaFrame, image=anhBia, style="frameXemThongTin.TLabel")
+                anhBiaLabel.image = anhBia
+                anhBiaLabel.grid(row=0, column=0, sticky="w")
+            else:
+                anhBia = ImageTk.PhotoImage(CHUCNANG_Method.layAnhBiaTuAPI(sach.duongDan))
+                
+                anhBiaLabel = ttk.Label(anhBiaFrame, image=anhBia, style="frameXemThongTin.TLabel")
+                anhBiaLabel.image = anhBia
+                anhBiaLabel.grid(row=0, column=0, sticky="w")
             break
 
 def themSachWindow(frame, tree): 
