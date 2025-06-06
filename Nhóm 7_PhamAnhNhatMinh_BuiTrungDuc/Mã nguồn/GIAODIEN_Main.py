@@ -22,7 +22,7 @@ def moGiaoDienChinh(role):
     theme = ttk.Style(root)
     theme.theme_use('clam')
     title = "Quản lý sách cá nhân"
-    resolution = f"{rootWidth-100}x{rootHeight-100}+{int(rootWidth * 0.05)}+{int(rootHeight * 0.05)}"
+    resolution = f"{rootWidth-100}x{rootHeight-260}+{int(rootWidth * 0.05)}+{int(rootHeight * 0.05)}"
 
     root.title(title)
     root.geometry(resolution)
@@ -90,7 +90,7 @@ def moGiaoDienChinh(role):
     treeViewFrame.pack(fill="both")
     treeViewFrame.columnconfigure(1, weight=1)
     
-    tree = ttk.Treeview(treeViewFrame, columns=("ID", "Tiêu đề", "Tác giả", "Năm xuất bản"), show="headings", height=6)
+    tree = ttk.Treeview(treeViewFrame, columns=("ID", "Tiêu đề", "Tác giả", "Năm xuất bản"), show="headings", height=12)
 
     # Ghi tiêu đề cột
     tree.heading("ID", text="ID")
@@ -126,8 +126,12 @@ def moGiaoDienChinh(role):
         borderwidth=1
     )
 
-    nutFrame = ttk.Frame(mainFrame, style="frameCon.TFrame")
-    nutFrame.pack(fill="both", expand=False, anchor='center', ipady=20)
+    framNutStyle = ttk.Style()
+    framNutStyle.configure("frameNutStyle.TFrame", 
+                           background = "lightblue")
+
+    nutFrame = ttk.Frame(mainFrame, style="frameNutStyle.TFrame")
+    nutFrame.pack(expand=False, ipady=20, pady=20)
 
     # Thông số của button
     buttonWidth = 17
@@ -220,62 +224,63 @@ def xuLyDangKy(usernameEntry, passwordEntry, roleVar):
     else:
         messagebox.showerror("Lỗi", "Tên đăng nhập đã tồn tại!")
 
-# Tạo cửa sổ đăng nhập
-cuaSoDangNhap = tk.Tk()
-cuaSoDangNhap.title("Đăng nhập")
-cuaSoDangNhap.geometry("560x320")
-cuaSoDangNhap.config(bg="lightblue")
-theme = ttk.Style(cuaSoDangNhap)
-theme.theme_use('clam')
+# # Tạo cửa sổ đăng nhập
+# cuaSoDangNhap = tk.Tk()
+# cuaSoDangNhap.title("Đăng nhập")
+# cuaSoDangNhap.geometry("560x320")
+# cuaSoDangNhap.config(bg="lightblue")
+# theme = ttk.Style(cuaSoDangNhap)
+# theme.theme_use('clam')
 
-# Style cửa sổ đăng nhập
-dangNhapStyle = ttk.Style()
-dangNhapStyle.configure("frameDangNhap.TFrame",
-                background="lightblue",      # Nền xanh biển
-                foreground="#000000",      # Chữ trắng
-                font=("Segoe UI", 10, "bold"),  # In đậm
-                borderwidth=1)
+# # Style cửa sổ đăng nhập
+# dangNhapStyle = ttk.Style()
+# dangNhapStyle.configure("frameDangNhap.TFrame",
+#                 background="lightblue",      # Nền xanh biển
+#                 foreground="#000000",      # Chữ trắng
+#                 font=("Segoe UI", 10, "bold"),  # In đậm
+#                 borderwidth=1)
 
-dangNhapStyle.configure("dangNhapButton.TButton",
-                background="#1976D2",      # Nền xanh biển
-                foreground="#FFFFFF",      # Chữ trắng
-                font=("Segoe UI", 10, "bold"),  # In đậm
-                borderwidth=1)
+# dangNhapStyle.configure("dangNhapButton.TButton",
+#                 background="#1976D2",      # Nền xanh biển
+#                 foreground="#FFFFFF",      # Chữ trắng
+#                 font=("Segoe UI", 10, "bold"),  # In đậm
+#                 borderwidth=1)
 
-# **Tạo Frame chứa các thành phần theo chiều ngang**
-frameMain = ttk.Frame(cuaSoDangNhap, padding=10, style="frameDangNhap.TFrame")
-frameMain.pack()
+# # **Tạo Frame chứa các thành phần theo chiều ngang**
+# frameMain = ttk.Frame(cuaSoDangNhap, padding=10, style="frameDangNhap.TFrame")
+# frameMain.pack()
 
-# **Tên đăng nhập**
-ttk.Label(frameMain, text="Tên đăng nhập:", background="lightblue").grid(row=0, column=0, padx=5, sticky='w')
-usernameEntry = ttk.Entry(frameMain)
-usernameEntry.grid(row=0, column=1, padx=5)
+# # **Tên đăng nhập**
+# ttk.Label(frameMain, text="Tên đăng nhập:", background="lightblue").grid(row=0, column=0, padx=5, sticky='w')
+# usernameEntry = ttk.Entry(frameMain)
+# usernameEntry.grid(row=0, column=1, padx=5)
 
-# **Mật khẩu**
-ttk.Label(frameMain, text="Mật khẩu:", background="lightblue").grid(row=1, column=0, padx=5, sticky='w')
-passwordEntry = ttk.Entry(frameMain, show="*")
-passwordEntry.grid(row=1, column=1, padx=5)
+# # **Mật khẩu**
+# ttk.Label(frameMain, text="Mật khẩu:", background="lightblue").grid(row=1, column=0, padx=5, sticky='w')
+# passwordEntry = ttk.Entry(frameMain, show="*")
+# passwordEntry.grid(row=1, column=1, padx=5)
 
-# **Chọn quyền**
-ttk.Label(frameMain, text="Chọn quyền:", background="lightblue").grid(row=2, column=0, padx=5)
-roleVar = tk.StringVar()
-roleMenu = ttk.Combobox(frameMain, textvariable=roleVar, state="readonly", width=10)
-roleMenu["values"] = ("admin", "user")
-roleMenu.grid(row=2, column=1, padx=10)
+# # **Chọn quyền**
+# ttk.Label(frameMain, text="Chọn quyền:", background="lightblue").grid(row=2, column=0, padx=5)
+# roleVar = tk.StringVar()
+# roleMenu = ttk.Combobox(frameMain, textvariable=roleVar, state="readonly", width=10)
+# roleMenu["values"] = ("admin", "user")
+# roleMenu.grid(row=2, column=1, padx=10)
 
-# **Nút Đăng nhập và Đăng ký**
-frameButtons = ttk.Frame(cuaSoDangNhap, padding=5, style="frameDangNhap.TFrame")
-frameButtons.pack()
+# # **Nút Đăng nhập và Đăng ký**
+# frameButtons = ttk.Frame(cuaSoDangNhap, padding=5, style="frameDangNhap.TFrame")
+# frameButtons.pack()
 
-ttk.Button(frameButtons, text="Đăng nhập", command=lambda: dangNhap(cuaSoDangNhap), style="dangNhapButton.TButton").grid(row=0, column=0, padx=10)
-ttk.Button(frameButtons, text="Đăng ký", command=moCuaSoDangKy, style="dangNhapButton.TButton").grid(row=0, column=1, padx=10)
+# ttk.Button(frameButtons, text="Đăng nhập", command=lambda: dangNhap(cuaSoDangNhap), style="dangNhapButton.TButton").grid(row=0, column=0, padx=10)
+# ttk.Button(frameButtons, text="Đăng ký", command=moCuaSoDangKy, style="dangNhapButton.TButton").grid(row=0, column=1, padx=10)
+
+# if __name__ == "__main__":
+#     cuaSoDangNhap.mainloop()
+
+
 
 if __name__ == "__main__":
-    cuaSoDangNhap.mainloop()
-
-
-
-
+    moGiaoDienChinh("admin")
 
 
 
