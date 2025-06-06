@@ -13,8 +13,8 @@ ctypes.windll.shcore.SetProcessDpiAwareness(1)
 def moGiaoDienChinh(role):
     # Tạo window
     root = tk.Tk()
+   
     
-
     # Thông tin mặc định của giao diện chính 
     rootWidth = root.winfo_screenwidth()
     rootHeight= root.winfo_screenheight()
@@ -26,16 +26,47 @@ def moGiaoDienChinh(role):
 
     root.title(title)
     root.geometry(resolution)
-    root.resizable(False, False)
+    root.resizable(True, True)
+
+
+    # Thanh cuộn
+     # Thay vì tạo mainFrame trực tiếp trong root, tạo canvas trước
+    container = ttk.Frame(root)
+    container.pack(fill="both", expand=True)
+
+    canvas = tk.Canvas(container)
+    canvas.pack(side="left", fill="both", expand=True)
+
+    scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+    scrollbar.pack(side="right", fill="y")
+
+    canvas.configure(yscrollcommand=scrollbar.set)
 
     # Khung chính của phần mềm 
     # Style frame chính
     styleMainframe = ttk.Style()
     styleMainframe.configure("MainFrame.TFrame", background="lightblue")
 
-    mainFrame = ttk.Frame(root, padding=60, relief="sunken", borderwidth=5, style="MainFrame.TFrame")
-    mainFrame.pack(fill="both", expand=True)
+    mainFrame = ttk.Frame(canvas, padding=60, relief="sunken", borderwidth=5, style="MainFrame.TFrame")
+
+    # Thay vì pack, tạo một "window" bên trong canvas để chứa mainFrame
+    canvas_window = canvas.create_window((0, 0), window=mainFrame, anchor="nw")
     root.columnconfigure(0, weight=1)
+
+    # Khi nội dung mainFrame thay đổi kích thước -> cập nhật vùng cuộn
+    def on_mainFrame_configure(event):
+        canvas.configure(scrollregion=canvas.bbox("all"))
+
+    mainFrame.bind("<Configure>", on_mainFrame_configure)
+
+    # (Không bắt buộc) Thêm scroll chuột
+    def _on_mousewheel(event):
+        canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+    canvas.bind_all("<MouseWheel>", _on_mousewheel)
+
+    def resize_canvas(event):
+        canvas.itemconfig(canvas_window, width=event.width)
+    canvas.bind("<Configure>", resize_canvas)
 
     # Tiêu đề
     tieuDeLabel = tk.Label(
@@ -145,6 +176,10 @@ def moGiaoDienChinh(role):
         ttk.Button(nutFrame, text="Cập nhật sách", width=buttonWidth, command=lambda: GIAODIEN_Window.capNhatSachWindow(mainFrame, tree)).grid(row=0, column=3, padx=50, ipady=buttonHeight)
 
     ttk.Button(nutFrame, text="Đọc sách", width=buttonWidth, command=lambda: CHUCNANG_Method.docSach(tree)).grid(row=0, column=4, padx=50, ipady=buttonHeight)
+
+
+
+
 
     root.mainloop()
 
