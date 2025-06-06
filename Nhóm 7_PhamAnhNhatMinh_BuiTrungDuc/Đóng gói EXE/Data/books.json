@@ -4,83 +4,87 @@
         "ten": "Wuthering Heights",
         "tacgia": "Emily Brontë",
         "namxb": "1847",
-        "duongdan": "Books/wuthering-heights.pdf"
+        "duongdan": "Books/wuthering-heights.pdf",
+        "cache": ""
     },
     {
         "id": 2,
         "ten": "The Great Gatsby",
         "tacgia": "F. Scott Fitzgerald",
         "namxb": "1925",
-        "duongdan": "Books/the-great-gatsby.pdf"
+        "duongdan": "Books/the-great-gatsby.pdf",
+        "cache": ""
     },
     {
         "id": 3,
         "ten": "Frankenstein",
         "tacgia": "Mary Shelley",
         "namxb": "1818",
-        "duongdan": "Books/frankenstein.pdf"
+        "duongdan": "Books/frankenstein.pdf",
+        "cache": ""
     },
     {
         "id": 4,
         "ten": "Heart of Darkness",
         "tacgia": "Joseph Conrad",
         "namxb": "1902",
-        "duongdan": "Books/heart-of-darkness.pdf"
+        "duongdan": "Books/heart-of-darkness.pdf",
+        "cache": ""
     },
     {
         "id": 5,
         "ten": "Emma",
         "tacgia": "Jane Austen",
         "namxb": "1816",
-        "duongdan": "Books/emma.pdf"
+        "duongdan": "Books/emma.pdf",
+        "cache": ""
     },
     {
         "id": 6,
         "ten": "Grimm’s Fairy Tales",
         "tacgia": "The Brothers Grimm",
         "namxb": "1812",
-        "duongdan": "Books/grimms-fairy-tales.pdf"
+        "duongdan": "Books/grimms-fairy-tales.pdf",
+        "cache": ""
     },
     {
         "id": 7,
         "ten": "The Idiot",
         "tacgia": "Fyodor Dostoevsky",
         "namxb": "1869",
-        "duongdan": "Books/the-idiot.pdf"
+        "duongdan": "Books/the-idiot.pdf",
+        "cache": ""
     },
     {
         "id": 8,
         "ten": "The Island of Doctor Moreau",
         "tacgia": "H. G. Wells",
         "namxb": "1896",
-        "duongdan": "Books/the-island-of-doctor-moreau.pdf"
+        "duongdan": "Books/the-island-of-doctor-moreau.pdf",
+        "cache": ""
     },
     {
         "id": 9,
         "ten": "The Jungle Book",
         "tacgia": "Rudyard Kipling",
         "namxb": "1894",
-        "duongdan": "Books/the-jungle-book.pdf"
+        "duongdan": "Books/the-jungle-book.pdf",
+        "cache": ""
     },
     {
         "id": 12,
         "ten": "Nuclear power reactor safety",
         "tacgia": "E. E. Lewis",
         "namxb": "1977",
-        "duongdan": "https://openlibrary.org/works/OL2908639W"
+        "duongdan": "https://openlibrary.org/works/OL2908639W",
+        "cache": ""
     },
     {
         "id": 13,
         "ten": "Harry Potter and the Deathly Hallows",
         "tacgia": "J. K. Rowling",
         "namxb": 2007,
-        "duongdan": "https://openlibrary.org/works/OL82586W"
-    },
-    {
-        "id": 14,
-        "ten": "Journey to the center of the earth",
-        "tacgia": "Jules Verne",
-        "namxb": 2000,
-        "duongdan": "https://openlibrary.org/works/OL18437639W"
+        "duongdan": "https://openlibrary.org/works/OL82586W",
+        "cache": ""
     }
 ]
