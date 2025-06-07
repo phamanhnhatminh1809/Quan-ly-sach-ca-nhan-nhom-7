@@ -45,11 +45,17 @@ def luuUserVaoFileJson(users):
 
 def themUser(username, password, role="user"):
     users = docFileUserJson()
+    admin_exists = any(user["role"] == "admin" for user in users)
+
+    if role == "admin" and admin_exists:
+        return False, "Chỉ được có duy nhất 1 tài khoản admin." 
+    
     if any(user["username"] == username for user in users):
-        return False  # Tránh trùng lặp
+        return False, "Tên đăng nhập đã tồn tại."
+
     users.append({"username": username, "password": password, "role": role})
     luuUserVaoFileJson(users)
-    return True
+    return True, "Đăng ký thành công."
 
 def xacThucUser(username, password):
     users = docFileUserJson()

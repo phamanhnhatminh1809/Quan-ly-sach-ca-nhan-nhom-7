@@ -3,15 +3,5 @@
         "username": "Minh",
         "password": "123",
         "role": "admin"
-    },
-    {
-        "username": "abc",
-        "password": "123",
-        "role": "admin"
-    },
-    {
-        "username": "KO",
-        "password": "111",
-        "role": "user"
     }
 ]
