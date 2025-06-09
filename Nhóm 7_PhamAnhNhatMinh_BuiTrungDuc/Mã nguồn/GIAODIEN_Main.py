@@ -266,7 +266,6 @@ def dangNhap(cuaSoDangNhap):
 def moCuaSoDangKy():
     cuaSoDangKy = tk.Toplevel()
     cuaSoDangKy.title("Đăng ký")
-    cuaSoDangKy.geometry("400x250") 
     cuaSoDangKy.config(bg="lightblue")
     # Style cửa sổ đăng nhập
     dangKyStyle = ttk.Style()

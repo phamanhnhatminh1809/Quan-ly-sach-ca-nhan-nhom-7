@@ -68,5 +68,12 @@
         "tacgia": "J. K. Rowling, J.K. Rowling",
         "namxb": 2007,
         "duongdan": "https://openlibrary.org/works/OL82586W"
+    },
+    {
+        "id": 11,
+        "ten": "The internet of things",
+        "tacgia": "Samuel Greengard",
+        "namxb": 2015,
+        "duongdan": "https://openlibrary.org/works/OL20001280W"
     }
 ]
