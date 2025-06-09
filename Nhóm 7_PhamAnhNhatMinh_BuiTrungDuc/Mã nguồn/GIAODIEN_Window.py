@@ -25,10 +25,6 @@ def xemThongTinSachWindow(frame, tree):
         xemWindow.transient(frame)
         xemWindow.focus_set()  
         xemWindow.grab_set() 
-
-       
-
-        
          
         # Style
         style = ttk.Style()
@@ -95,32 +91,32 @@ def xemThongTinSachWindow(frame, tree):
                 anhBiaFrame = ttk.Frame(xemThongTinFrame, style="frameXemThongTin.TFrame")
                 anhBiaFrame.grid(row=1, column=0, sticky="e", padx=(10,0), pady=(0,15))
 
-                if CHUCNANG_Method.kiemTraSachCoLayTuAPI(sach.duongDan) == False:
+                if CHUCNANG_Method.kiemTraSachCoLayTuAPI(sach.duongDan) is False:
                     anhBia = CHUCNANG_Method.layAnhBiaTuFile(sach.duongDan)
                     
                     anhBiaLabel = ttk.Label(anhBiaFrame, image=anhBia, style="frameXemThongTin.TLabel")
                     anhBiaLabel.image = anhBia
                     anhBiaLabel.grid(row=0, column=0, sticky="w")
                 else:
-                    anhBia = ImageTk.PhotoImage(CHUCNANG_Method.layAnhBiaTuAPI(sach.duongDan))
+                    anhBia = CHUCNANG_Method.layAnhBiaTuAPI(sach.duongDan)
                     
                     anhBiaLabel = ttk.Label(anhBiaFrame, image=anhBia, style="frameXemThongTin.TLabel")
                     anhBiaLabel.image = anhBia
                     anhBiaLabel.grid(row=0, column=0, sticky="w")
+                    print(anhBia)
                 break
+    except Exception as e:
+        print(e)
+    # Gán geometry chỉ với vị trí, không thay đổi kích thước
+    xemWindow.update_idletasks()
 
-        # Gán geometry chỉ với vị trí, không thay đổi kích thước
-        xemWindow.update_idletasks()
+    # Thông tin của frame xem thông tin
+    xemWindowWidth = xemWindow.winfo_reqwidth()
+    xemWindowHeight = xemWindow.winfo_reqheight()
+    viTriX = int(mainFrameWidth / 4)
+    viTriY = int(mainFrameHeight / 4)
 
-        # Thông tin của frame xem thông tin
-        xemWindowWidth = xemWindow.winfo_reqwidth()
-        xemWindowHeight = xemWindow.winfo_reqheight()
-        viTriX = int(mainFrameWidth / 2 - xemWindowWidth / 2)
-        viTriY = int(mainFrameHeight / 2 - xemWindowHeight / 2)
-
-        xemWindow.geometry(f"{xemWindowWidth}x{xemWindowHeight}+{viTriX}+{viTriY}")
-    except:
-        return
+    xemWindow.geometry(f"{xemWindowWidth}x{xemWindowHeight}+{viTriX}+{viTriY}")
 
 def themSachWindow(frame, tree): 
     # Độ phân giải của frame chính

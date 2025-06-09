@@ -128,7 +128,7 @@ def chonTuCay(event):
 # def choAnhBiaVaoCache(anhBia):
 def luuAnhBiaVaoCache(anhBia, duongDanToiAnhCache):
     try:
-        anhBia[0].save(duongDanToiAnhCache, "PNG")
+        anhBia.save(duongDanToiAnhCache, "PNG")
     except Exception as e:
         print(e)
 
@@ -150,7 +150,7 @@ def layAnhBiaTuFile(duongDanToiSach):
 
         if not os.path.exists(duongDanToiAnhCache):
             anhBiaTuPdf = convert_from_path(duongDanToiSach, first_page=1, last_page=1, dpi=50, poppler_path=poppler_path)
-            luuAnhBiaVaoCache(anhBiaTuPdf, duongDanToiAnhCache)
+            luuAnhBiaVaoCache(anhBiaTuPdf[0], duongDanToiAnhCache)
         return layAnhBiaTuCache(duongDanToiAnhCache)
     except Exception as e:
         print(e)
@@ -173,13 +173,11 @@ def layAnhBiaTuAPI(duongDanToiLinkSach):
             taiAnh = requests.get(linkAnhBia)
             anhBia = Image.open(BytesIO(taiAnh.content))
             anhBia = anhBia.resize((300, 400), Image.NEAREST)
-            luuAnhBiaVaoCache(taiAnh, duongDanToiAnhCache)
+            luuAnhBiaVaoCache(anhBia, duongDanToiAnhCache)
+        return layAnhBiaTuCache(duongDanToiAnhCache)
     except Exception as e:
         print(e)
         return None
-    
-    return layAnhBiaTuCache(duongDanToiAnhCache)
-
 
 def kiemTraSachCoLayTuAPI(path):
     if "openlibrary.org" in path:

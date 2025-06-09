@@ -61,5 +61,12 @@
         "tacgia": "Rudyard Kipling",
         "namxb": "1894",
         "duongdan": "Books/the-jungle-book.pdf"
+    },
+    {
+        "id": 10,
+        "ten": "Harry Potter and the Deathly Hallows",
+        "tacgia": "J. K. Rowling, J.K. Rowling",
+        "namxb": 2007,
+        "duongdan": "https://openlibrary.org/works/OL82586W"
     }
 ]
