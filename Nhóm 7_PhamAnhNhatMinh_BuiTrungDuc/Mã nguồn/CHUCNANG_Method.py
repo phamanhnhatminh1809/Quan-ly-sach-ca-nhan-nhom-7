@@ -125,60 +125,45 @@ def chonTuCay(event):
 
 # GIAODIEN_Window
 # xemThongTinSachWindow(frame, tree)
-# def choAnhBiaVaoCache(anhBia):
-def luuAnhBiaVaoCache(anhBia, duongDanToiAnhCache):
+def layAnhBiaTuFile(duongDan):
+    poppler_path = "poppler/"
     try:
-        anhBia[0].save(duongDanToiAnhCache, "PNG")
+        # Đọc file PDF để kiểm tra số trang
+        pdf = PdfReader(duongDan)
+        if len(pdf.pages) == 0:
+            print("PDF không có trang nào.")
+            return None
+
+        # Chuyển trang đầu tiên thành hình ảnh
+        images = convert_from_path(duongDan, first_page=1, last_page=1, dpi=200, poppler_path=poppler_path)
+
+        # Chuyển đổi sang đối tượng PIL Image và thay đổi kích thước
+        img = images[0].resize((400, 500), Image.Resampling.LANCZOS)
+        
+        # Tạo đối tượng ImageTk.PhotoImage
+        tk_image = ImageTk.PhotoImage(img)
+        return tk_image
     except Exception as e:
-        print(e)
+        print(f"Đã xảy ra lỗi: {e}")
+        return None
 
-def layAnhBiaTuCache(duongDanToiAnhCache):
-    try:
-        anhBiaTuPdf = Image.open(duongDanToiAnhCache)
-
-        anhBiaPILImage = anhBiaTuPdf.resize((400, 500), Image.Resampling.NEAREST)
-        anhBiaImageTk = ImageTk.PhotoImage(anhBiaPILImage)
-        return anhBiaImageTk
-    except Exception as e:
-        print(e)
-
-def layAnhBiaTuFile(duongDanToiSach):
-    try:
-        poppler_path = "poppler/"
-        tenSachTrongDuongDan = os.path.splitext(os.path.basename(duongDanToiSach))[0]
-        duongDanToiAnhCache = os.path.join("Cache", f"{tenSachTrongDuongDan}.png")
-
-        if not os.path.exists(duongDanToiAnhCache):
-            anhBiaTuPdf = convert_from_path(duongDanToiSach, first_page=1, last_page=1, dpi=50, poppler_path=poppler_path)
-            luuAnhBiaVaoCache(anhBiaTuPdf, duongDanToiAnhCache)
-        return layAnhBiaTuCache(duongDanToiAnhCache)
-    except Exception as e:
-        print(e)
-
-def layAnhBiaTuAPI(duongDanToiLinkSach):
+def layAnhBiaTuAPI(duongDan):
     def thayTheKyTu(chuoi, kyTuMoi, viTri):
         return chuoi[:viTri] + kyTuMoi + chuoi[viTri+1:]
     try:
-        tenSachTrongDuongDan = duongDanToiLinkSach[30:]
-        duongDanToiAnhCache = os.path.join("Cache", f"{tenSachTrongDuongDan}.png")
+        reponse = requests.get(duongDan)
+        soup = BeautifulSoup(reponse.text, 'html.parser')
+        theChuaAnh = soup.find("div", class_="SRPCover bookCover")
+        linkAnhBia = theChuaAnh.find('a')['href']
+        linkAnhBia = "https:" + linkAnhBia
+        linkAnhBia = thayTheKyTu(linkAnhBia, "M", -5)
 
-        if not os.path.exists(duongDanToiAnhCache):
-            reponse = requests.get(duongDanToiLinkSach, timeout=5)
-            soup = BeautifulSoup(reponse.text, 'html.parser')
-            theChuaAnh = soup.find("div", class_="SRPCover bookCover")
-            linkAnhBia = theChuaAnh.find('a')['href']
-            linkAnhBia = "https:" + linkAnhBia
-            linkAnhBia = thayTheKyTu(linkAnhBia, "M", -5)
-
-            taiAnh = requests.get(linkAnhBia)
-            anhBia = Image.open(BytesIO(taiAnh.content))
-            anhBia = anhBia.resize((300, 400), Image.NEAREST)
-            luuAnhBiaVaoCache(taiAnh, duongDanToiAnhCache)
-    except Exception as e:
-        print(e)
+        taiAnh = requests.get(linkAnhBia)
+        anhBia = Image.open(BytesIO(taiAnh.content))
+        anhBia = anhBia.resize((300, 400), Image.NEAREST)
+    except:
         return None
-    
-    return layAnhBiaTuCache(duongDanToiAnhCache)
+    return anhBia
 
 
 def kiemTraSachCoLayTuAPI(path):
