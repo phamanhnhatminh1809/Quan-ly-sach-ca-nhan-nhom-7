@@ -8,104 +8,106 @@ import CHUCNANG_Method
 from DOITUONG_Sach import Sach
 
 def xemThongTinSachWindow(frame, tree):
+    try:
+        luaChon = tree.selection()
+        if not luaChon:
+            messagebox.showwarning("Cảnh báo", "Vui lòng chọn một cuốn sách để xem thông tin")
+            return
 
-    luaChon = tree.selection()
-    if not luaChon:
-        messagebox.showwarning("Cảnh báo", "Vui lòng chọn một cuốn sách để xem thông tin")
-        return
+        # Độ phân giải của frame chính
+        mainFrameWidth = frame.winfo_screenwidth()
+        mainFrameHeight = frame.winfo_screenheight()
 
-    # Độ phân giải của frame chính
-    mainFrameWidth = frame.winfo_screenwidth()
-    mainFrameHeight = frame.winfo_screenheight()
+        # Thông tin của frame xem thông tin
+        xemWindowWidth = int(mainFrameWidth * 0.63)
+        xemWindowHeight = int(mainFrameHeight * 0.43)
+        viTriX = int(mainFrameWidth / 2 - xemWindowWidth / 2)
+        viTriY = int(mainFrameHeight / 2 - xemWindowHeight / 2)
 
-    # Thông tin của frame xem thông tin
-    xemWindowWidth = int(mainFrameWidth * 0.63)
-    xemWindowHeight = int(mainFrameHeight * 0.43)
-    viTriX = int(mainFrameWidth / 2 - xemWindowWidth / 2)
-    viTriY = int(mainFrameHeight / 2 - xemWindowHeight / 2)
+        # Window xem thông tin
+        xemWindow = tk.Toplevel(frame)
+        xemWindow.title("Xem thông tin sách")
+        xemWindow.geometry(f"{xemWindowWidth}x{xemWindowHeight}+{viTriX}+{viTriY}")
+        xemWindow.resizable(False, False)
+        xemWindow.config(bg="#f4f4f4")
+        xemWindow.transient(frame)           
+        xemWindow.grab_set()                
+        xemWindow.focus_set()  
 
-    # Window xem thông tin
-    xemWindow = tk.Toplevel(frame)
-    xemWindow.title("Xem thông tin sách")
-    xemWindow.geometry(f"{xemWindowWidth}x{xemWindowHeight}+{viTriX}+{viTriY}")
-    xemWindow.resizable(False, False)
-    xemWindow.config(bg="#f4f4f4")
-    xemWindow.transient(frame)           
-    xemWindow.grab_set()                
-    xemWindow.focus_set()  
+        # Style
+        style = ttk.Style()
+        # Background, font cho frame và label
+        style.configure("frameXemThongTin.TFrame", background="lightblue")
+        style.configure("frameXemThongTin.TLabel", background="lightblue", font=("Segoe UI", 15))
+        style.configure("frameXemThongTin.Title.TLabel", font=("Segoe UI", 23, "bold"), foreground="#0056b3", background = "#f4f4f4")
+        style.configure("frameXemThongTin.Bold.TLabel", font=("Segoe UI", 15, "bold"), foreground="#333333", background = "lightblue")
 
-    # Style
-    style = ttk.Style()
-    # Background, font cho frame và label
-    style.configure("frameXemThongTin.TFrame", background="lightblue")
-    style.configure("frameXemThongTin.TLabel", background="lightblue", font=("Segoe UI", 15))
-    style.configure("frameXemThongTin.Title.TLabel", font=("Segoe UI", 23, "bold"), foreground="#0056b3", background = "#f4f4f4")
-    style.configure("frameXemThongTin.Bold.TLabel", font=("Segoe UI", 15, "bold"), foreground="#333333", background = "lightblue")
-
-    def taoDongChu(frame, labelText, valueText):
-        try:
-            if len(valueText) > 40:
-                valueText = valueText[:39] + '\n' + valueText[39:]
-                labelText += '\n'
-            if len(valueText) > 80:
-                valueText = valueText[:79] + '\n' + valueText[79:]
-                labelText += '\n'
-        except:
-            pass
-        rowFrame = ttk.Frame(frame)
-        rowFrame.pack(fill="x", pady=30)
-        label = ttk.Label(rowFrame, text=labelText, style="frameXemThongTin.Bold.TLabel")
-        label.pack(side="left", anchor="w", ipadx=10)
-        value = ttk.Label(rowFrame, text=valueText, style="frameXemThongTin.TLabel")
-        value.pack(side="left", anchor="w", expand=True, fill="x")
-        
-    # Id cuốn sách được chọn
-    idSach = int(tree.item(luaChon)["values"][0])
-
-    # Tiêu đề
-    for sach in DANHSACH_DanhSachCacSach.DsSachObject:
-        if sach.id == idSach:
-            title_label = ttk.Label(xemWindow, text=sach.ten, style="frameXemThongTin.Title.TLabel", anchor="center")
-            title_label.pack()
-        
-    # Frame để chứa thông tin và ảnh
-    xemThongTinFrame = ttk.Frame(xemWindow, style="frameXemThongTin.TFrame")
-    xemThongTinFrame.pack()
-    xemThongTinFrame.columnconfigure(0,weight=1)
-
-    for sach in DANHSACH_DanhSachCacSach.DsSachObject:
-        if sach.id == idSach:
-            # Frame thông tin chi tiết 
-            thong_tin_frame = ttk.Frame(xemThongTinFrame, style="frameXemThongTin.TFrame")
-            thong_tin_frame.grid(row=1, column=1, sticky="nw", pady=(10,15), padx=(40, 10))
+        def taoDongChu(frame, labelText, valueText):
+            try:
+                if len(valueText) > 40:
+                    valueText = valueText[:39] + '\n' + valueText[39:]
+                    labelText += '\n'
+                if len(valueText) > 80:
+                    valueText = valueText[:79] + '\n' + valueText[79:]
+                    labelText += '\n'
+            except:
+                pass
+            rowFrame = ttk.Frame(frame)
+            rowFrame.pack(fill="x", pady=30)
+            label = ttk.Label(rowFrame, text=labelText, style="frameXemThongTin.Bold.TLabel")
+            label.pack(side="left", anchor="w", ipadx=10)
+            value = ttk.Label(rowFrame, text=valueText, style="frameXemThongTin.TLabel")
+            value.pack(side="left", anchor="w", expand=True, fill="x")
             
-            if CHUCNANG_Method.kiemTraSachCoLayTuAPI(sach.duongDan):
-                duongDanFile = sach.duongDan
-            else:
-                duongDanFile = os.path.abspath(sach.duongDan)
+        # Id cuốn sách được chọn
+        idSach = int(tree.item(luaChon)["values"][0])
 
-            taoDongChu(thong_tin_frame, "ID:", str(sach.id))
-            taoDongChu(thong_tin_frame, "Tác giả:", sach.tacGia)
-            taoDongChu(thong_tin_frame, "Năm xuất bản:", sach.namXB)
-            taoDongChu(thong_tin_frame, "Đường dẫn:",  duongDanFile)
+        # Tiêu đề
+        for sach in DANHSACH_DanhSachCacSach.DsSachObject:
+            if sach.id == idSach:
+                title_label = ttk.Label(xemWindow, text=sach.ten, style="frameXemThongTin.Title.TLabel", anchor="center")
+                title_label.pack()
+            
+        # Frame để chứa thông tin và ảnh
+        xemThongTinFrame = ttk.Frame(xemWindow, style="frameXemThongTin.TFrame")
+        xemThongTinFrame.pack()
+        xemThongTinFrame.columnconfigure(0,weight=1)
 
-            # Frame ảnh bìa 
-            anhBiaFrame = ttk.Frame(xemThongTinFrame, style="frameXemThongTin.TFrame")
-            anhBiaFrame.grid(row=1, column=0, sticky="e", padx=(10,0), pady=(0,15))
-
-            if CHUCNANG_Method.kiemTraSachCoLayTuAPI(sach.duongDan) == False:
-                anhBia = CHUCNANG_Method.layAnhBiaTuFile(sach.duongDan)
+        for sach in DANHSACH_DanhSachCacSach.DsSachObject:
+            if sach.id == idSach:
+                # Frame thông tin chi tiết 
+                thong_tin_frame = ttk.Frame(xemThongTinFrame, style="frameXemThongTin.TFrame")
+                thong_tin_frame.grid(row=1, column=1, sticky="nw", pady=(10,15), padx=(40, 10))
                 
-                anhBiaLabel = ttk.Label(anhBiaFrame, image=anhBia, style="frameXemThongTin.TLabel")
-                anhBiaLabel.image = anhBia
-                anhBiaLabel.grid(row=0, column=0, sticky="w")
-            else:
-                anhBia = ImageTk.PhotoImage(CHUCNANG_Method.layAnhBiaTuAPI(sach.duongDan))
-                
-                anhBiaLabel = ttk.Label(anhBiaFrame, image=anhBia, style="frameXemThongTin.TLabel")
-                anhBiaLabel.image = anhBia
-                anhBiaLabel.grid(row=0, column=0, sticky="w")
-            break
+                if CHUCNANG_Method.kiemTraSachCoLayTuAPI(sach.duongDan):
+                    duongDanFile = sach.duongDan
+                else:
+                    duongDanFile = os.path.abspath(sach.duongDan)
+
+                taoDongChu(thong_tin_frame, "ID:", str(sach.id))
+                taoDongChu(thong_tin_frame, "Tác giả:", sach.tacGia)
+                taoDongChu(thong_tin_frame, "Năm xuất bản:", sach.namXB)
+                taoDongChu(thong_tin_frame, "Đường dẫn:",  duongDanFile)
+
+                # Frame ảnh bìa 
+                anhBiaFrame = ttk.Frame(xemThongTinFrame, style="frameXemThongTin.TFrame")
+                anhBiaFrame.grid(row=1, column=0, sticky="e", padx=(10,0), pady=(0,15))
+
+                if CHUCNANG_Method.kiemTraSachCoLayTuAPI(sach.duongDan) == False:
+                    anhBia = CHUCNANG_Method.layAnhBiaTuFile(sach.duongDan)
+                    
+                    anhBiaLabel = ttk.Label(anhBiaFrame, image=anhBia, style="frameXemThongTin.TLabel")
+                    anhBiaLabel.image = anhBia
+                    anhBiaLabel.grid(row=0, column=0, sticky="w")
+                else:
+                    anhBia = ImageTk.PhotoImage(CHUCNANG_Method.layAnhBiaTuAPI(sach.duongDan))
+                    
+                    anhBiaLabel = ttk.Label(anhBiaFrame, image=anhBia, style="frameXemThongTin.TLabel")
+                    anhBiaLabel.image = anhBia
+                    anhBiaLabel.grid(row=0, column=0, sticky="w")
+                break
+    except:
+        return
 
 def themSachWindow(frame, tree): 
     # Độ phân giải của frame chính
