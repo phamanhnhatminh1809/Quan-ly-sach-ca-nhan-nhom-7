@@ -76,6 +76,7 @@ def moGiaoDienChinh(role, dangnhap_window):
         root.destroy() 
         mocuasodangnhap() 
 
+   
     # Thông tin mặc định của giao diện chính 
     rootWidth = root.winfo_screenwidth()
     rootHeight= root.winfo_screenheight()
@@ -83,7 +84,7 @@ def moGiaoDienChinh(role, dangnhap_window):
     theme = ttk.Style(root)
     theme.theme_use('clam')
     title = "Quản lý sách cá nhân"
-    resolution = f"{rootWidth-100}x{rootHeight-100}+{int(rootWidth * 0.05)}+{int(rootHeight * 0.05)}"
+    resolution = f"{rootWidth-100}x{rootHeight-260}+{int(rootWidth * 0.05)}+{int(rootHeight * 0.05)}"
 
     root.title(title)
     root.geometry(resolution)
@@ -93,7 +94,7 @@ def moGiaoDienChinh(role, dangnhap_window):
     container = ttk.Frame(root)
     container.pack(fill="both", expand=True)
 
-    canvas = tk.Canvas(container)
+    canvas = tk.Canvas(container, background="lightblue")
     canvas.pack(side="left", fill="both", expand=True)
 
     scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
@@ -106,7 +107,7 @@ def moGiaoDienChinh(role, dangnhap_window):
     styleMainframe = ttk.Style()
     styleMainframe.configure("MainFrame.TFrame", background="lightblue")
 
-    mainFrame = ttk.Frame(canvas, padding=60, relief="sunken", borderwidth=5, style="MainFrame.TFrame")
+    mainFrame = ttk.Frame(canvas, padding=60, borderwidth=5, style="MainFrame.TFrame")
 
     canvas_window = canvas.create_window((0, 0), window=mainFrame, anchor="nw")
     root.columnconfigure(0, weight=1)
@@ -124,7 +125,6 @@ def moGiaoDienChinh(role, dangnhap_window):
     def resize_canvas(event):
         canvas.itemconfig(canvas_window, width=event.width)
     canvas.bind("<Configure>", resize_canvas)
-
 
     # Tiêu đề
     tieuDeLabel = tk.Label(
@@ -162,7 +162,7 @@ def moGiaoDienChinh(role, dangnhap_window):
 
     ttk.Entry(searchFrame, textvariable=noiDungTimKiem).grid(row=0, column=0, padx=10)
     ttk.Button(searchFrame, text= "Tìm", command=lambda: CHUCNANG_Method.timSach(noiDungTimKiem, tree)).grid(row=0, column=1, padx=15, ipadx=13, ipady=6)
-    ttk.Button(searchFrame, text="Tìm sách online", command=lambda: GIAODIEN_Window.timSachOnlineWindow(mainFrame, tree)).grid(row=0, column=2, padx=15, ipadx=13, ipady=6)     
+    ttk.Button(searchFrame, text="Tìm sách online", command=lambda: GIAODIEN_Window.timSachOnlineWindow(mainFrame, tree)).grid(row=0, column=2, padx=15, ipadx=13, ipady=6)    
 
     # Khung danh sách các sách
     # Style cho danh sách
@@ -171,15 +171,15 @@ def moGiaoDienChinh(role, dangnhap_window):
         "Treeview",
         font=("Segoe UI", 10),
         rowheight=50,
-        background="#FFFFFF",         # Nền trắng
-        foreground="#212121",         # Chữ xám đậm
-        fieldbackground="#FFFFFF"     # Nền trắng cho vùng trống
+        background="#FFFFFF",        # Nền trắng
+        foreground="#212121",        # Chữ xám đậm
+        fieldbackground="#FFFFFF"    # Nền trắng cho vùng trống
     )
     treeViewStyle.configure(
         "Treeview.Heading",
         font=("Segoe UI", 11, "bold"),
-        background="#1976D2",         # Xanh đậm
-        foreground="#FFFFFF"          # Chữ trắng
+        background="#1976D2",        # Xanh đậm
+        foreground="#FFFFFF"         # Chữ trắng
     )
     treeViewStyle.map(
         "Treeview",
@@ -191,7 +191,7 @@ def moGiaoDienChinh(role, dangnhap_window):
     treeViewFrame.pack(fill="both")
     treeViewFrame.columnconfigure(1, weight=1)
     
-    tree = ttk.Treeview(treeViewFrame, columns=("ID", "Tiêu đề", "Tác giả", "Năm xuất bản"), show="headings", height=6)
+    tree = ttk.Treeview(treeViewFrame, columns=("ID", "Tiêu đề", "Tác giả", "Năm xuất bản"), show="headings", height=12)
 
     # Ghi tiêu đề cột
     tree.heading("ID", text="ID")
@@ -238,7 +238,7 @@ def moGiaoDienChinh(role, dangnhap_window):
     buttonWidth = 17
     buttonHeight = 15
 
-    ttk.Button(nutFrame, text="Xem thông tin sách", command=lambda: GIAODIEN_Window.xemThongTinSachWindow(mainFrame, tree), width=buttonWidth).grid(row=0, column=0, padx=(180,50), ipady=buttonHeight)
+    ttk.Button(nutFrame, text="Xem thông tin sách", command=lambda: GIAODIEN_Window.xemThongTinSachWindow(mainFrame, tree), width=buttonWidth).grid(row=0, column=0, padx=10, ipady=buttonHeight)
     
     if role == "admin": 
         ttk.Button(nutFrame, text="Thêm sách", width=buttonWidth, command=lambda: GIAODIEN_Window.themSachWindow(mainFrame, tree)).grid(row=0, column=1, padx=50, ipady=buttonHeight)
@@ -273,28 +273,28 @@ def moCuaSoDangKy():
     # Style cửa sổ đăng nhập
     dangKyStyle = ttk.Style()
     dangKyStyle.configure("frameDangKy.TFrame",
-                          background="lightblue",      # Nền xanh biển
-                          foreground="#000000",       # Chữ trắng
-                          font=("Segoe UI", 10, "bold"),  # In đậm
-                          borderwidth=1)
+                    background="lightblue",      # Nền xanh biển
+                    foreground="#000000",      # Chữ trắng
+                    font=("Segoe UI", 10, "bold"),  # In đậm
+                    borderwidth=1)
 
     dangKyStyle.configure("dangKyButton.TButton",
-                          background="#1976D2",      # Nền xanh biển
-                          foreground="#FFFFFF",       # Chữ trắng
-                          font=("Segoe UI", 10, "bold"),  # In đậm
-                          borderwidth=1)
+                    background="#1976D2",      # Nền xanh biển
+                    foreground="#FFFFFF",      # Chữ trắng
+                    font=("Segoe UI", 10, "bold"),  # In đậm
+                    borderwidth=1)
     # **Tạo Frame chứa các phần tử đăng ký**
     frameMain = ttk.Frame(cuaSoDangKy, padding=10, style = "frameDangKy.TFrame")
     frameMain.pack()
 
     # **Tên đăng nhập**
     ttk.Label(frameMain, text="Tên đăng nhập:", background="lightblue").grid(row=0, column=0, padx=5, sticky='w')
-    newUsernameEntry = ttk.Entry(frameMain, width=20)
+    newUsernameEntry = ttk.Entry(frameMain, width=15)
     newUsernameEntry.grid(row=0, column=1, padx=5)
 
     # **Mật khẩu**
     ttk.Label(frameMain, text="Mật khẩu:", background="lightblue").grid(row=1, column=0, padx=5, sticky='w')
-    newPasswordEntry = ttk.Entry(frameMain, show="*", width=20)
+    newPasswordEntry = ttk.Entry(frameMain, show="*", width=15)
     newPasswordEntry.grid(row=1, column=1, padx=5)
 
     # **Xác nhận Mật khẩu**
