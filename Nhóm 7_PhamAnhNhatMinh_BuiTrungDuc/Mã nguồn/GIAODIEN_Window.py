@@ -17,23 +17,19 @@ def xemThongTinSachWindow(frame, tree):
         # Độ phân giải của frame chính
         mainFrameWidth = frame.winfo_screenwidth()
         mainFrameHeight = frame.winfo_screenheight()
-
-        # Thông tin của frame xem thông tin
-        xemWindowWidth = int(mainFrameWidth * 0.63)
-        xemWindowHeight = int(mainFrameHeight * 0.43)
-        viTriX = int(mainFrameWidth / 2 - xemWindowWidth / 2)
-        viTriY = int(mainFrameHeight / 2 - xemWindowHeight / 2)
-
+        
         # Window xem thông tin
         xemWindow = tk.Toplevel(frame)
         xemWindow.title("Xem thông tin sách")
-        xemWindow.geometry(f"{xemWindowWidth}x{xemWindowHeight}+{viTriX}+{viTriY}")
-        xemWindow.resizable(False, False)
         xemWindow.config(bg="#f4f4f4")
-        xemWindow.transient(frame)           
-        xemWindow.grab_set()                
+        xemWindow.transient(frame)
         xemWindow.focus_set()  
+        xemWindow.grab_set() 
 
+       
+
+        
+         
         # Style
         style = ttk.Style()
         # Background, font cho frame và label
@@ -42,14 +38,20 @@ def xemThongTinSachWindow(frame, tree):
         style.configure("frameXemThongTin.Title.TLabel", font=("Segoe UI", 23, "bold"), foreground="#0056b3", background = "#f4f4f4")
         style.configure("frameXemThongTin.Bold.TLabel", font=("Segoe UI", 15, "bold"), foreground="#333333", background = "lightblue")
 
+        def cachDong(labelText, valueText):
+            textLenght = len(valueText)
+            insertIndex = 39
+            
+            while textLenght > 40:
+                valueText = valueText[:insertIndex] + '\n' + valueText[insertIndex:]
+                textLenght  -= 40
+                insertIndex += 40
+                labelText += '\n'
+            return labelText, valueText
+        
         def taoDongChu(frame, labelText, valueText):
             try:
-                if len(valueText) > 40:
-                    valueText = valueText[:39] + '\n' + valueText[39:]
-                    labelText += '\n'
-                if len(valueText) > 80:
-                    valueText = valueText[:79] + '\n' + valueText[79:]
-                    labelText += '\n'
+                labelText, valueText = cachDong(labelText, valueText)
             except:
                 pass
             rowFrame = ttk.Frame(frame)
@@ -70,7 +72,7 @@ def xemThongTinSachWindow(frame, tree):
             
         # Frame để chứa thông tin và ảnh
         xemThongTinFrame = ttk.Frame(xemWindow, style="frameXemThongTin.TFrame")
-        xemThongTinFrame.pack()
+        xemThongTinFrame.pack(expand=True)
         xemThongTinFrame.columnconfigure(0,weight=1)
 
         for sach in DANHSACH_DanhSachCacSach.DsSachObject:
@@ -106,6 +108,17 @@ def xemThongTinSachWindow(frame, tree):
                     anhBiaLabel.image = anhBia
                     anhBiaLabel.grid(row=0, column=0, sticky="w")
                 break
+
+        # Gán geometry chỉ với vị trí, không thay đổi kích thước
+        xemWindow.update_idletasks()
+
+        # Thông tin của frame xem thông tin
+        xemWindowWidth = xemWindow.winfo_reqwidth()
+        xemWindowHeight = xemWindow.winfo_reqheight()
+        viTriX = int(mainFrameWidth / 2 - xemWindowWidth / 2)
+        viTriY = int(mainFrameHeight / 2 - xemWindowHeight / 2)
+
+        xemWindow.geometry(f"{xemWindowWidth}x{xemWindowHeight}+{viTriX}+{viTriY}")
     except:
         return
 
