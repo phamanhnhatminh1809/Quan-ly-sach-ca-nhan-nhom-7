@@ -10,7 +10,7 @@ import DANHSACH_DanhSachCacSach
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 # Hàm để khởi chạy cửa sổ đăng nhập
-def mocuasodangnhap():
+def moCuaSoDangNhap():
     global cuaSoDangNhap, usernameEntry, passwordEntry, roleVar
     cuaSoDangNhap = tk.Tk()
     cuaSoDangNhap.title("Đăng nhập")
@@ -63,7 +63,6 @@ def mocuasodangnhap():
     
     cuaSoDangNhap.mainloop()
 
-
 # Mở ứng dụng chính nếu đăng nhập thành công
 def moGiaoDienChinh(role, dangnhap_window):
     dangnhap_window.destroy()  
@@ -74,8 +73,7 @@ def moGiaoDienChinh(role, dangnhap_window):
     # Hàm đăng xuất
     def dangXuat(event=None): 
         root.destroy() 
-        mocuasodangnhap() 
-
+        moCuaSoDangNhap() 
    
     # Thông tin mặc định của giao diện chính 
     rootWidth = root.winfo_screenwidth()
@@ -138,14 +136,14 @@ def moGiaoDienChinh(role, dangnhap_window):
 
     # Đăng xuất
     dangxuatLabel = tk.Label(
-        root,
+        mainFrame,
         text="Đăng Xuất",
-        font=("Segoe UI", 15, "underline", "bold"), 
+        font=("Segoe UI", 18, "underline", "bold"), 
         fg="#003366",
         bg="lightblue", 
         cursor="hand2" 
     )
-    dangxuatLabel.place(relx=1.0, rely=0.0, anchor='ne', x=-60, y=70) 
+    dangxuatLabel.place(relx=1.0, rely=0.0, anchor='ne', x=-60, y=20) 
     dangxuatLabel.bind("<Button-1>", dangXuat)
 
 
@@ -331,4 +329,4 @@ def xuLyDangKy(usernameEntry, passwordEntry, confirmPasswordEntry, roleVar, regi
         messagebox.showerror("Lỗi", message)
 
 if __name__ == "__main__":
-    mocuasodangnhap()
+    moCuaSoDangNhap()
