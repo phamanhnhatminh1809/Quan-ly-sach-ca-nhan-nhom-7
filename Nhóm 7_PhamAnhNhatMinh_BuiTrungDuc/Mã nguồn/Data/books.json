@@ -7,18 +7,19 @@
         "duongdan": "Books/wuthering-heights.pdf"
     },
     {
+    "id": 3,
+    "ten": "Frankenstein",
+    "tacgia": "Mary Shelley",
+    "namxb": "1818",
+    "duongdan": "Books/frankenstein.pdf",
+    "cache": ""
+    },
+    {
         "id": 2,
         "ten": "The Great Gatsby",
         "tacgia": "F. Scott Fitzgerald",
         "namxb": "1925",
         "duongdan": "Books/the-great-gatsby.pdf"
-    },
-    {
-        "id": 3,
-        "ten": "Frankenstein",
-        "tacgia": "Mary Shelley",
-        "namxb": "1818",
-        "duongdan": "Books/frankenstein.pdf"
     },
     {
         "id": 4,
@@ -70,10 +71,10 @@
         "duongdan": "https://openlibrary.org/works/OL82586W"
     },
     {
-        "id": 11,
-        "ten": "The internet of things",
-        "tacgia": "Samuel Greengard",
-        "namxb": "2015",
-        "duongdan": "https://openlibrary.org/works/OL20001280W"
+        "id": 12,
+        "ten": "Harry Potter and the Philosopher's Stone",
+        "tacgia": "J. K. Rowling",
+        "namxb": 1997,
+        "duongdan": "https://openlibrary.org/works/OL82563W"
     }
 ]

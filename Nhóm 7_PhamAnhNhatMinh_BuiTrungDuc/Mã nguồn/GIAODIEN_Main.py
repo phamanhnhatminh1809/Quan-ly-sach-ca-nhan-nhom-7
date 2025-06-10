@@ -16,7 +16,6 @@ def moCuaSoDangNhap():
     global cuaSoDangNhap, usernameEntry, passwordEntry, roleVar
     cuaSoDangNhap = tk.Tk()
     cuaSoDangNhap.title("Đăng nhập")
-    cuaSoDangNhap.geometry("1200x700")
     cuaSoDangNhap.resizable(False, False)
     cuaSoDangNhap.config(bg="#ADD8E6")
 
@@ -135,7 +134,9 @@ def moCuaSoDangNhap():
     roleMenu.grid(row=2, column=1, padx=10, pady=10, sticky='ew')
 
     # Nút Đăng nhập và Đăng ký
-    frameButtons = ttk.Frame(loginForm, style="MainFrame.TFrame")
+    frameButtonStyle = ttk.Style()
+    frameButtonStyle.configure("LoginButtonFrame.TFrame", background = "White")
+    frameButtons = ttk.Frame(loginForm, style="LoginButtonFrame.TFrame")
     frameButtons.grid(row=3, column=0, columnspan=2, pady=30, sticky="ew")
     frameButtons.columnconfigure(0, weight=1)
     frameButtons.columnconfigure(1, weight=1)
