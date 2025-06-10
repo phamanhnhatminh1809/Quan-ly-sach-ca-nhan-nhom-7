@@ -18,10 +18,5 @@
         "username": "duc",
         "password": "123",
         "role": "user"
-    },
-    {
-        "username": "abd",
-        "password": "123",
-        "role": "user"
     }
 ]

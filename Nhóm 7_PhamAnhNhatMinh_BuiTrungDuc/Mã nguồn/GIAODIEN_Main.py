@@ -1,12 +1,14 @@
 import ctypes
 import tkinter as tk
 from tkinter import ttk, messagebox
+from PIL import ImageTk, Image
 
 import GIAODIEN_Window
 import CHUCNANG_Method
 import DANHSACH_DanhSachCacSach
+from DOITUONG_Sach import Sach
 
-# Chỉnh lại DPI hợp với độ phân giải hiện tại
+# Chỉnh lại DPI hợp với độ phân giải hiện tại của màn hình Windows
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 # Hàm để khởi chạy cửa sổ đăng nhập
@@ -14,53 +16,138 @@ def moCuaSoDangNhap():
     global cuaSoDangNhap, usernameEntry, passwordEntry, roleVar
     cuaSoDangNhap = tk.Tk()
     cuaSoDangNhap.title("Đăng nhập")
-    cuaSoDangNhap.geometry("560x320")
-    cuaSoDangNhap.config(bg="lightblue")
+    cuaSoDangNhap.geometry("1200x700")
+    cuaSoDangNhap.resizable(False, False)
+    cuaSoDangNhap.config(bg="#ADD8E6")
+
     theme = ttk.Style(cuaSoDangNhap)
     theme.theme_use('clam')
 
-    # Style cửa sổ đăng nhập
-    dangNhapStyle = ttk.Style()
-    dangNhapStyle.configure("frameDangNhap.TFrame",
-                            background="lightblue",      # Nền xanh biển
-                            foreground="#000000",       # Chữ trắng
-                            font=("Segoe UI", 10, "bold"),  # In đậm
-                            borderwidth=1)
+    theme.configure("MainFrame.TFrame", background="#ADD8E6")
+    theme.configure("ImageFrame.TFrame", background="#ADD8E6") 
 
-    dangNhapStyle.configure("dangNhapButton.TButton",
-                            background="#1976D2",      # Nền xanh biển
-                            foreground="#FFFFFF",       # Chữ trắng
-                            font=("Segoe UI", 10, "bold"),  # In đậm
-                            borderwidth=1)
+    theme.configure("RightContent.TFrame",
+                            background="#FFFFFF", 
+                            relief="solid",
+                            borderwidth=2)
 
-    # **Tạo Frame chứa các thành phần theo chiều ngang**
-    frameMain = ttk.Frame(cuaSoDangNhap, padding=10, style="frameDangNhap.TFrame")
-    frameMain.pack()
+    theme.configure("LoginFormContent.TFrame", background="#FFFFFF")
 
-    # **Tên đăng nhập**
-    ttk.Label(frameMain, text="Tên đăng nhập:", background="lightblue").grid(row=0, column=0, padx=5, sticky='w')
-    usernameEntry = ttk.Entry(frameMain)
-    usernameEntry.grid(row=0, column=1, padx=5)
+    theme.configure("LoginHeading.TLabel",
+                            background="#FFFFFF",
+                            font=("Segoe UI", 22, "bold"),
+                            foreground="#003366")
 
-    # **Mật khẩu**
-    ttk.Label(frameMain, text="Mật khẩu:", background="lightblue").grid(row=1, column=0, padx=5, sticky='w')
-    passwordEntry = ttk.Entry(frameMain, show="*")
-    passwordEntry.grid(row=1, column=1, padx=5)
+    theme.configure("LoginLabel.TLabel",
+                            background="#FFFFFF",
+                            font=("Segoe UI", 11),
+                            foreground="#333333")
 
-    # **Chọn quyền**
-    ttk.Label(frameMain, text="Chọn quyền:", background="lightblue").grid(row=2, column=0, padx=5)
+    theme.configure("LoginEntry.TEntry",
+                            fieldbackground="#F5F5F5",
+                            foreground="#333333",
+                            insertcolor="#333333",
+                            borderwidth=1,
+                            relief="flat",
+                            padding=(8, 8))
+    theme.map("LoginEntry.TEntry",
+                            fieldbackground=[('focus', '#E0F2F7')])
+
+    theme.configure("LoginCombobox.TCombobox",
+                            fieldbackground="#F5F5F5",
+                            foreground="#333333",
+                            selectbackground="#1976D2",
+                            selectforeground="#FFFFFF",
+                            font=("Segoe UI", 11),
+                            padding=(8, 8))
+    theme.map("LoginCombobox.TCombobox",
+                            fieldbackground=[('readonly', '#F5F5F5'), ('focus', '#E0F2F7')])
+    theme.configure('TCombobox.Listbox',
+                            background='#F5F5F5',
+                            foreground='#333333',
+                            selectbackground='#1976D2',
+                            selectforeground='#FFFFFF',
+                            font=("Segoe UI", 11))
+
+    theme.configure("LoginButton.TButton",
+                            background="#1976D2",
+                            foreground="#FFFFFF",
+                            font=("Segoe UI", 12, "bold"),
+                            borderwidth=0,
+                            relief="flat",
+                            padding=(20, 10))
+    theme.map("LoginButton.TButton",
+                            background=[('active', '#1565C0')])
+
+    frameMain = ttk.Frame(cuaSoDangNhap, padding=20, style="MainFrame.TFrame")
+    frameMain.pack(fill=tk.BOTH, expand=True)
+
+    frameAnh = ttk.Frame(frameMain, style="ImageFrame.TFrame")
+    frameAnh.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 0))
+
+    image_width = 600
+    image_height = 500
+
+    try:
+        image_path = "book_login.png" 
+        anh = Image.open(image_path)
+        anh = anh.resize((image_width, image_height), Image.LANCZOS)
+        anhTk = ImageTk.PhotoImage(anh)
+        anhLabel = ttk.Label(frameAnh, image=anhTk, background="#ADD8E6")
+        anhLabel.image = anhTk
+        anhLabel.pack(fill=tk.BOTH, expand=True)
+    except FileNotFoundError:
+        ttk.Label(frameAnh, text=f"Không tìm thấy ảnh: {image_path}", background="#ADD8E6", font=("Segoe UI", 12)).pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+    except Exception as e:
+        ttk.Label(frameAnh, text=f"Lỗi tải ảnh: {e}", background="#ADD8E6", font=("Segoe UI", 12)).pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+
+    frameRightContent = ttk.Frame(frameMain, style="RightContent.TFrame")
+    frameRightContent.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(0, 0))
+
+    frameRightContent.grid_rowconfigure(0, weight=1)
+    frameRightContent.grid_rowconfigure(2, weight=1)
+    frameRightContent.grid_columnconfigure(0, weight=1)
+
+    ttk.Label(frameRightContent, text="ĐĂNG NHẬP", style="LoginHeading.TLabel").grid(row=0, column=0, pady=(30, 40), sticky="s")
+
+    loginForm = ttk.Frame(frameRightContent, style="LoginFormContent.TFrame")
+    loginForm.grid(row=1, column=0, sticky="nsew", padx=30, pady=30)
+
+    loginForm.grid_columnconfigure(0, weight=1)
+    loginForm.grid_columnconfigure(1, weight=1)
+
+    # Tên đăng nhập
+    ttk.Label(loginForm, text="Tên đăng nhập:", style="LoginLabel.TLabel").grid(row=0, column=0, padx=10, pady=10, sticky='w')
+    usernameEntry = ttk.Entry(loginForm, style="LoginEntry.TEntry")
+    usernameEntry.grid(row=0, column=1, padx=10, pady=10, sticky='ew')
+
+    # Mật khẩu
+    ttk.Label(loginForm, text="Mật khẩu:", style="LoginLabel.TLabel").grid(row=1, column=0, padx=10, pady=10, sticky='w')
+    passwordEntry = ttk.Entry(loginForm, show="*", style="LoginEntry.TEntry")
+    passwordEntry.grid(row=1, column=1, padx=10, pady=10, sticky='ew')
+
+    # Chọn quyền
+    ttk.Label(loginForm, text="Chọn quyền:", style="LoginLabel.TLabel").grid(row=2, column=0, padx=10, pady=10, sticky='w')
     roleVar = tk.StringVar()
-    roleMenu = ttk.Combobox(frameMain, textvariable=roleVar, state="readonly", width=10)
+    roleMenu = ttk.Combobox(loginForm, textvariable=roleVar, state="readonly", style="LoginCombobox.TCombobox")
     roleMenu["values"] = ("admin", "user")
-    roleMenu.grid(row=2, column=1, padx=10)
+    roleMenu.set("user")
+    roleMenu.grid(row=2, column=1, padx=10, pady=10, sticky='ew')
 
-    # **Nút Đăng nhập và Đăng ký**
-    frameButtons = ttk.Frame(cuaSoDangNhap, padding=5, style="frameDangNhap.TFrame")
-    frameButtons.pack()
+    # Nút Đăng nhập và Đăng ký
+    frameButtons = ttk.Frame(loginForm, style="MainFrame.TFrame")
+    frameButtons.grid(row=3, column=0, columnspan=2, pady=30, sticky="ew")
+    frameButtons.columnconfigure(0, weight=1)
+    frameButtons.columnconfigure(1, weight=1)
 
-    ttk.Button(frameButtons, text="Đăng nhập", command=lambda: dangNhap(cuaSoDangNhap), style="dangNhapButton.TButton").grid(row=0, column=0, padx=10)
-    ttk.Button(frameButtons, text="Đăng ký", command=moCuaSoDangKy, style="dangNhapButton.TButton").grid(row=0, column=1, padx=10)
-    
+    ttk.Button(frameButtons, text="Đăng nhập", command=lambda: dangNhap(cuaSoDangNhap), style="LoginButton.TButton").grid(row=0, column=0, padx=10, sticky="ew")
+    ttk.Button(frameButtons, text="Đăng ký", command=moCuaSoDangKy, style="LoginButton.TButton").grid(row=0, column=1, padx=10, sticky="ew")
+
+    cuaSoDangNhap.update_idletasks()
+    x = (cuaSoDangNhap.winfo_screenwidth() - cuaSoDangNhap.winfo_width()) // 2
+    y = (cuaSoDangNhap.winfo_screenheight() - cuaSoDangNhap.winfo_height()) // 2
+    cuaSoDangNhap.geometry(f"+{x}+{y}")
+
     cuaSoDangNhap.mainloop()
 
 # Mở ứng dụng chính nếu đăng nhập thành công
@@ -257,53 +344,125 @@ def dangNhap(cuaSoDangNhap):
     if role_from_db:
         if role == role_from_db:
             messagebox.showinfo("Thành công", f"Chào mừng {username}!\nQuyền: {role}")
-            moGiaoDienChinh(role, cuaSoDangNhap) 
+            moGiaoDienChinh(role, cuaSoDangNhap) # Chuyển đến giao diện chính
         else:
-            messagebox.showerror("Lỗi", "Quyền truy cập không hợp lệ!")
+            messagebox.showerror("Lỗi", "Quyền truy cập không hợp lệ cho tài khoản này!")
     else:
         messagebox.showerror("Lỗi", "Sai tên đăng nhập hoặc mật khẩu!")
 
 def moCuaSoDangKy():
     cuaSoDangKy = tk.Toplevel()
     cuaSoDangKy.title("Đăng ký")
-    cuaSoDangKy.config(bg="lightblue")
-    # Style cửa sổ đăng nhập
-    dangKyStyle = ttk.Style()
-    dangKyStyle.configure("frameDangKy.TFrame",
-                    background="lightblue",      # Nền xanh biển
-                    foreground="#000000",      # Chữ trắng
-                    font=("Segoe UI", 10, "bold"),  # In đậm
-                    borderwidth=1)
+    cuaSoDangKy.geometry("1200x700")
+    cuaSoDangKy.resizable(False, False)
+    cuaSoDangKy.config(bg="#ADD8E6")
+    cuaSoDangKy.transient(cuaSoDangNhap)
+    cuaSoDangKy.grab_set()
+    cuaSoDangKy.focus_set()
 
-    dangKyStyle.configure("dangKyButton.TButton",
-                    background="#1976D2",      # Nền xanh biển
-                    foreground="#FFFFFF",      # Chữ trắng
-                    font=("Segoe UI", 10, "bold"),  # In đậm
-                    borderwidth=1)
-    # **Tạo Frame chứa các phần tử đăng ký**
-    frameMain = ttk.Frame(cuaSoDangKy, padding=10, style = "frameDangKy.TFrame")
-    frameMain.pack()
+    theme = ttk.Style(cuaSoDangKy)
+    theme.configure("MainFrame.TFrame", background="#ADD8E6") 
+    theme.configure("ImageFrame.TFrame", background="#ADD8E6") 
 
-    # **Tên đăng nhập**
-    ttk.Label(frameMain, text="Tên đăng nhập:", background="lightblue").grid(row=0, column=0, padx=5, sticky='w')
-    newUsernameEntry = ttk.Entry(frameMain, width=15)
-    newUsernameEntry.grid(row=0, column=1, padx=5)
+    theme.configure("RegisterRightContent.TFrame",
+                            background="#FFFFFF", 
+                            relief="solid",
+                            borderwidth=2)
 
-    # **Mật khẩu**
-    ttk.Label(frameMain, text="Mật khẩu:", background="lightblue").grid(row=1, column=0, padx=5, sticky='w')
-    newPasswordEntry = ttk.Entry(frameMain, show="*", width=15)
-    newPasswordEntry.grid(row=1, column=1, padx=5)
+    theme.configure("RegisterFormContent.TFrame", background="#FFFFFF")
 
-    # **Xác nhận Mật khẩu**
-    ttk.Label(frameMain, text="Xác nhận Mật khẩu:", background="lightblue").grid(row=2, column=0, padx=5, sticky='w')
-    confirmPasswordEntry = ttk.Entry(frameMain, show="*", width=20)
-    confirmPasswordEntry.grid(row=2, column=1, padx=5)
+    theme.configure("RegisterHeading.TLabel",
+                            background="#FFFFFF",
+                            font=("Segoe UI", 22, "bold"),
+                            foreground="#003366")
 
-    # **Chọn quyền**
-    newRoleVar = tk.StringVar(value="user") # giá trị mặc định là "user"
+    theme.configure("RegisterLabel.TLabel",
+                            background="#FFFFFF",
+                            font=("Segoe UI", 11),
+                            foreground="#333333")
 
-    # **Nút Đăng ký**
-    ttk.Button(frameMain, text="Đăng ký", command=lambda: xuLyDangKy(newUsernameEntry, newPasswordEntry, confirmPasswordEntry, newRoleVar, cuaSoDangKy), style="dangKyButton.TButton").grid(row=3, column=1, padx=10)
+    theme.configure("RegisterEntry.TEntry",
+                            fieldbackground="#F5F5F5",
+                            foreground="#333333",
+                            insertcolor="#333333",
+                            borderwidth=1,
+                            relief="flat",
+                            padding=(8, 8))
+    theme.map("RegisterEntry.TEntry",
+                            fieldbackground=[('focus', '#E0F2F7')])
+
+    theme.configure("RegisterButton.TButton",
+                            background="#1976D2",
+                            foreground="#FFFFFF",
+                            font=("Segoe UI", 12, "bold"),
+                            borderwidth=0,
+                            relief="flat",
+                            padding=(20, 10))
+    theme.map("RegisterButton.TButton",
+                            background=[('active', '#1565C0')])
+
+    frameMain = ttk.Frame(cuaSoDangKy, padding=20, style = "MainFrame.TFrame")
+    frameMain.pack(fill=tk.BOTH, expand=True)
+
+    frameAnh = ttk.Frame(frameMain, style="ImageFrame.TFrame")
+    frameAnh.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 0))
+
+    image_width = 600
+    image_height = 500
+    try:
+        image_path = "book_login.png"
+        anh = Image.open(image_path)
+        anh = anh.resize((image_width, image_height), Image.LANCZOS)
+        anhTk = ImageTk.PhotoImage(anh)
+        anhLabel = ttk.Label(frameAnh, image=anhTk, background="#ADD8E6")
+        anhLabel.image = anhTk
+        anhLabel.pack(fill=tk.BOTH, expand=True)
+    except FileNotFoundError:
+        ttk.Label(frameAnh, text=f"Không tìm thấy ảnh: {image_path}", background="#ADD8E6", font=("Segoe UI", 12)).pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+    except Exception as e:
+        ttk.Label(frameAnh, text=f"Lỗi tải ảnh: {e}", background="#ADD8E6", font=("Segoe UI", 12)).pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+
+    frameRightContent = ttk.Frame(frameMain, style="RegisterRightContent.TFrame")
+    frameRightContent.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(0, 0))
+
+    frameRightContent.grid_rowconfigure(0, weight=1)
+    frameRightContent.grid_rowconfigure(2, weight=1)
+    frameRightContent.grid_columnconfigure(0, weight=1)
+
+    ttk.Label(frameRightContent, text="ĐĂNG KÝ", style="RegisterHeading.TLabel").grid(row=0, column=0, pady=(30, 40), sticky="s")
+
+    registerForm = ttk.Frame(frameRightContent, style="RegisterFormContent.TFrame")
+    registerForm.grid(row=1, column=0, sticky="nsew", padx=30, pady=30)
+
+    registerForm.grid_columnconfigure(0, weight=1)
+    registerForm.grid_columnconfigure(1, weight=1)
+
+    # Tên đăng nhập
+    ttk.Label(registerForm, text="Tên đăng nhập:", style="RegisterLabel.TLabel").grid(row=0, column=0, padx=10, pady=10, sticky='w')
+    newUsernameEntry = ttk.Entry(registerForm, style="RegisterEntry.TEntry")
+    newUsernameEntry.grid(row=0, column=1, padx=10, pady=10, sticky='ew')
+
+    # Mật khẩu
+    ttk.Label(registerForm, text="Mật khẩu:", style="RegisterLabel.TLabel").grid(row=1, column=0, padx=10, pady=10, sticky='w')
+    newPasswordEntry = ttk.Entry(registerForm, show="*", style="RegisterEntry.TEntry")
+    newPasswordEntry.grid(row=1, column=1, padx=10, pady=10, sticky='ew')
+
+    # Xác nhận Mật khẩu
+    ttk.Label(registerForm, text="Xác nhận Mật khẩu:", style="RegisterLabel.TLabel").grid(row=2, column=0, padx=10, pady=10, sticky='w')
+    confirmPasswordEntry = ttk.Entry(registerForm, show="*", style="RegisterEntry.TEntry")
+    confirmPasswordEntry.grid(row=2, column=1, padx=10, pady=10, sticky='ew')
+
+    newRoleVar = tk.StringVar(value="user")
+
+    # Nút Đăng ký
+    ttk.Button(registerForm, text="Đăng ký", command=lambda: xuLyDangKy(newUsernameEntry, newPasswordEntry, confirmPasswordEntry, newRoleVar, cuaSoDangKy), style="RegisterButton.TButton").grid(row=3, column=0, columnspan=2, pady=30, sticky="ew")
+
+    cuaSoDangKy.update_idletasks()
+    x = (cuaSoDangKy.winfo_screenwidth() - cuaSoDangKy.winfo_width()) // 2
+    y = (cuaSoDangKy.winfo_screenheight() - cuaSoDangKy.winfo_height()) // 2
+    cuaSoDangKy.geometry(f"+{x}+{y}")
+
+    cuaSoDangKy.wait_window()
 
 def xuLyDangKy(usernameEntry, passwordEntry, confirmPasswordEntry, roleVar, register_window):
     username = usernameEntry.get()
@@ -318,8 +477,8 @@ def xuLyDangKy(usernameEntry, passwordEntry, confirmPasswordEntry, roleVar, regi
     if password != confirm_password:
         messagebox.showerror("Lỗi", "Mật khẩu và xác nhận mật khẩu không khớp!")
         return
-    
-    success, message = DANHSACH_DanhSachCacSach.themUser(username, password, role) 
+
+    success, message = DANHSACH_DanhSachCacSach.themUser(username, password, role)
 
     if success:
         messagebox.showinfo("Thành công", message + "\nVui lòng đăng nhập.")

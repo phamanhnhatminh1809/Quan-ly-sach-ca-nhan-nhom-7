@@ -390,8 +390,8 @@ def timSachOnlineWindow(frame, tree):
     mainFrameHeight = frame.winfo_screenheight()
 
     # Thông tin của frame tìm sách online
-    timSachWindowwWidth = int(mainFrameWidth * 0.42)
-    timSachWindowHeight = int(mainFrameHeight * 0.46)
+    timSachWindowwWidth = int(mainFrameWidth * 0.46)
+    timSachWindowHeight = int(mainFrameHeight * 0.47)
     viTriX = int(mainFrameWidth / 2 - timSachWindowwWidth / 2)
     viTriY = int(mainFrameHeight / 2 - timSachWindowHeight / 2)
 
