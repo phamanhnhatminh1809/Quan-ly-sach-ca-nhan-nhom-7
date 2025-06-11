@@ -1,27 +1,7 @@
 [
     {
-        "username": "Minh",
+        "username": "admin",
         "password": "123",
         "role": "admin"
-    },
-    {
-        "username": "abc",
-        "password": "123",
-        "role": "user"
-    },
-    {
-        "username": "KO",
-        "password": "111",
-        "role": "user"
-    },
-    {
-        "username": "duc",
-        "password": "123",
-        "role": "user"
-    },
-    {
-        "username": "abd",
-        "password": "123",
-        "role": "user"
     }
 ]
