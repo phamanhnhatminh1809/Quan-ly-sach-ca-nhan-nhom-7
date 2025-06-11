@@ -389,17 +389,10 @@ def timSachOnlineWindow(frame, tree):
     mainFrameWidth = frame.winfo_screenwidth()
     mainFrameHeight = frame.winfo_screenheight()
 
-    # Thông tin của frame tìm sách online
-    timSachWindowwWidth = int(mainFrameWidth * 0.46)
-    timSachWindowHeight = int(mainFrameHeight * 0.47)
-    viTriX = int(mainFrameWidth / 2 - timSachWindowwWidth / 2)
-    viTriY = int(mainFrameHeight / 2 - timSachWindowHeight / 2)
-
     # Window tìm sách online
     timSachWindow = tk.Toplevel(frame)
     timSachWindow.title("Tìm sách online")
-    timSachWindow.geometry(f"{timSachWindowwWidth}x{timSachWindowHeight}+{viTriX}+{viTriY}") 
-    timSachWindow.resizable(False, False)
+    timSachWindow.resizable(True, True)
     timSachWindow.config(bg="lightblue")
     timSachWindow.transient(frame)           
     timSachWindow.grab_set()                
